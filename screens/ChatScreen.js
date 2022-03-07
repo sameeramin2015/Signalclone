@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, Touchable, View } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { Avatar } from "react-native-elements";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 
 const ChatScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
@@ -21,9 +23,16 @@ const ChatScreen = ({ navigation, route }) => {
               uri: "https://connectingcouples.us/wp-content/uploads/2019/07/avatar-placeholder.png",
             }}
           />
-          <Text>{route.params.chatName}</Text>
+          <Text style={{ color: "white", marginLeft: 10, fontWeight: "700" }}>
+            {route.params.chatName}
+          </Text>
         </View>
       ),
+      headerLeft: () => {
+        <TouchableOpacity>
+          <AntDesign name="arrowleft" size={24} color="white" />
+        </TouchableOpacity>;
+      },
     });
   }, [navigation]);
   return (

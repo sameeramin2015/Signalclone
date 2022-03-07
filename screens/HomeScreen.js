@@ -1,28 +1,36 @@
-import { StyleSheet, SafeAreaView, ScrollView, Text, View } from "react-native";
-import { Avatar } from "react-native-elements";
-import React, { useLayoutEffect, useState, useEffect } from "react";
-import CustomListItem from "../Components/CustomListItem";
-import { auth, db } from "../firebase";
-import { TouchableOpacity } from "react-native";
-import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import CustomListItem from "../components/CustomListItem";
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
+import { Avatar } from "react-native-elements";
+import { db, auth } from "../firebase";
 
 const HomeScreen = ({ navigation }) => {
   const [chat, setChats] = useState([]);
-  const signOutUser = () => {
+
+  const handleSignOutUser = () => {
     auth.signOut().then(() => {
       navigation.replace("Login");
     });
   };
+
   useEffect(() => {
-    const unsubscribe = db.collection("chats").onSnapshot((snapshot) =>
+    const unsubscribe = db.collection('chats').onSnapshot(snapshot => {
       setChats(
-        snapshot.docs.map((doc) => ({
+        snapshot.docs.map(doc => ({
           id: doc.id,
-          data: doc.data(),
+          data: doc.data()
         }))
-      )
-    );
+      );
+    });console.log("unsubscribe" + unsubscribe);
 
     return unsubscribe;
   }, []);
@@ -30,25 +38,18 @@ const HomeScreen = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Signal",
-      headerStyle: { backgroundColor: "white" },
+      headerStyle: { backgroundColor: "#fff" },
       headerTitleStyle: { color: "black" },
-      headerTinColor: "black",
+      headerTintColor: "black",
       headerLeft: () => (
         <View style={{ marginLeft: 20 }}>
-          <TouchableOpacity onPress={signOutUser} activeOpacity={0.5}>
+          <TouchableOpacity activeOpacity={0.5} onPress={handleSignOutUser}>
             <Avatar rounded source={{ uri: auth?.currentUser?.photoURL }} />
           </TouchableOpacity>
         </View>
       ),
       headerRight: () => (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: 80,
-            marginRight: 20,
-          }}
-        >
+        <View style={styles.headerRight}>
           <TouchableOpacity activeOpacity={0.5}>
             <AntDesign name="camerao" size={24} color="black" />
           </TouchableOpacity>
@@ -56,22 +57,24 @@ const HomeScreen = ({ navigation }) => {
             onPress={() => navigation.navigate("AddChat")}
             activeOpacity={0.5}
           >
-            <SimpleLineIcons name="pencil" size={25} color="black" />
+            <SimpleLineIcons name="pencil" size={24} color="black" />
           </TouchableOpacity>
         </View>
       ),
     });
   }, [navigation]);
+
   const enterChat = (id, chatName) => {
     navigation.navigate('Chat', {
-      id,
-      chatName,
+      id: id,
+      chatName: chatName,
     });
-  }
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <StatusBar style="dark" />
-      <ScrollView>
+      <ScrollView style={styles.container}>
         {chat.map(({ id, data: { chatName } }) => (
           <CustomListItem
             key={id}
@@ -88,7 +91,14 @@ const HomeScreen = ({ navigation }) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  headerRight: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 80,
+    marginRight: 20,
+  },
+
   container: {
-    height: "100",
-  }
+    height: "100%",
+  },
 });

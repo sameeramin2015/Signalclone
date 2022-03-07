@@ -15,8 +15,8 @@ const CustomListItem = ({ id, chatName, enterChat }) => {
         <ListItem.Title style={{ fontWeight: "800" }}>
           {chatName}
         </ListItem.Title>
-        <ListItem.Subtitle numberOfLines={1} elipseSizeMode="tail">
-          ABC
+        <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
+         ABC
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
