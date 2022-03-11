@@ -36,8 +36,8 @@ const ChatScreen = ({ navigation, route }) => {
         >
           <Avatar
             rounded
-            source={{
-              uri: "https://connectingcouples.us/wp-content/uploads/2019/07/avatar-placeholder.png",
+            source = {{
+              uri: messages[0]?.data.photoURL,
             }}
           />
           <Text style={{ color: "white", marginLeft: 10, fontWeight: "700" }}>
@@ -73,7 +73,7 @@ const ChatScreen = ({ navigation, route }) => {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, messages]);
   const sendMessage = () => {
     Keyboard.dismiss();
 
@@ -121,15 +121,18 @@ const ChatScreen = ({ navigation, route }) => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{paddingTop: 15}} >
         {messages.map(({ id, data }) =>
         data.email === auth.currentUser.email ? (
                 <View key={id} style={styles.reciever}>
                     <Avatar 
-                    position="absolute"
+                    
                     rounded
-                    bottom={-15}
-                    right={-5}
+                    containerStyle={{
+                      bottom: -15,
+                      right: -5,
+                      position: "absolute",
+                    }}
                     size={30}
                     source={{
                       uri: data.photoURL,
@@ -138,8 +141,14 @@ const ChatScreen = ({ navigation, route }) => {
                     <Text style={styles.recieverText}>{data.message}</Text>
                 </View>
             ) : (
-                <View style={styles.sender}>
-                     <Avatar />
+                <View key={id} style={styles.sender}>
+                     <Avatar
+                        containerStyle={{
+                          bottom: -15,
+                          right: -5,
+                          position: "absolute",
+                        }}
+                      />
                     <Text style={styles.senderText}>{data.message}</Text>
                 </View>
             )
@@ -205,5 +214,22 @@ const styles = StyleSheet.create({
     margin: 15,
     maxWidth: "80%",
     position: "relative",
+  },
+  senderText: {
+    color: "orange",
+    fontWeight: "500",
+    paddingLeft: 10,
+    marginBottom: 15,
+  },
+  recieverText: {
+    color: "orange",
+    fontWeight: "500",
+    marginLeft: 10,
+  },
+  senderName: {
+    left: 10,
+    paddingRight: 10,
+    fontSize: 10,
+    color: "orange",
   }
 })
