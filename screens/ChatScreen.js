@@ -126,6 +126,11 @@ const ChatScreen = ({ navigation, route }) => {
         data.email === auth.currentUser.email ? (
                 <View key={id} style={styles.reciever}>
                     <Avatar 
+                    position="absolute"
+                    rounded
+                    bottom={-15}
+                    right={-5}
+                    size={30}
                     source={{
                       uri: data.photoURL,
                     }}
