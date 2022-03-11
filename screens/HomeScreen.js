@@ -14,7 +14,7 @@ import { Avatar } from "react-native-elements";
 import { db, auth } from "../firebase";
 
 const HomeScreen = ({ navigation }) => {
-  const [chat, setChats] = useState([]);
+  const [chats, setChats] = useState([]);
 
   const handleSignOutUser = () => {
     auth.signOut().then(() => {
@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = db.collection('chats').onSnapshot(snapshot => {
+    const unsubscribe = db.collection('chat').onSnapshot(snapshot => {
       setChats(
         snapshot.docs.map(doc => ({
           id: doc.id,
@@ -75,7 +75,7 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView>
       <StatusBar style="dark" />
       <ScrollView style={styles.container}>
-        {chat.map(({ id, data: { chatName } }) => (
+        {chats.map(({ id, data: { chatName } }) => (
           <CustomListItem
             key={id}
             id={id}
